@@ -70,6 +70,34 @@ vector<T, Alloc>::~vector ()
 }
 
 /*
+** ITERATORS
+*/
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator vector<T, Alloc>::begin()
+{
+	return (typename vector<T>::iterator(&this->_data[0]));
+}
+
+template < class T, class Alloc >
+const typename vector<T, Alloc>::iterator vector<T, Alloc>::begin() const
+{
+	return (typename vector<T>::iterator(&this->_data[0]));
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator vector<T, Alloc>::end()
+{
+	return (typename vector<T>::iterator(&this->_data[this->_size]));
+}
+
+template < class T, class Alloc >
+const typename vector<T, Alloc>::iterator vector<T, Alloc>::end() const
+{
+	return (typename vector<T>::iterator(&this->_data[this->_size]));
+}
+
+/*
 ** CAPACITY
 */
 
@@ -82,6 +110,7 @@ std::size_t vector<T, Alloc>::size ()
 template < class T, class Alloc >
 std::size_t vector<T, Alloc>::max_size() const
 {
+	//미완
 	return (1);
 }
 
@@ -158,3 +187,145 @@ const T & vector<T, Alloc>::back() const
 }
 
 template class vector<int>;
+
+/*
+** iterator
+*/
+
+template < class T, class Alloc >
+vector<T, Alloc>::iterator::iterator(): _pointer(NULL)
+{
+}
+
+template < class T, class Alloc >
+vector<T, Alloc>::iterator::iterator(T * pointer): _pointer(pointer)
+{
+}
+
+template < class T, class Alloc >
+vector<T, Alloc>::iterator::iterator(const iterator & ref): _pointer(ref._pointer)
+{
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator & vector<T, Alloc>::iterator::operator = (const iterator & ref)
+{
+	this->_pointer = ref._pointer;
+	return (*this);
+}
+
+template < class T, class Alloc >
+bool vector<T, Alloc>::iterator::operator == (const iterator & ref) const
+{
+	return (this->_pointer == ref._pointer);
+}
+
+template < class T, class Alloc >
+bool vector<T, Alloc>::iterator::operator != (const iterator & ref) const
+{
+	return (this->_pointer != ref._pointer);
+}
+
+template < class T, class Alloc >
+T & vector<T, Alloc>::iterator::operator * () const
+{
+	return (*this->_pointer);
+}
+
+template < class T, class Alloc >
+T & vector<T, Alloc>::iterator::operator -> ()
+{
+	//미완
+	return (*this->_pointer);
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator & vector<T, Alloc>::iterator::operator++()
+{
+	++this->_pointer;
+	return (*this);
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator vector<T, Alloc>::iterator::operator++(int)
+{
+	vector<T, Alloc>::iterator tmp = *this;
+	++this->_pointer;
+	return (tmp);
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator & vector<T, Alloc>::iterator::operator--()
+{
+	--this->_pointer;
+	return (*this);
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator vector<T, Alloc>::iterator::operator--(int)
+{
+	vector<T, Alloc>::iterator tmp = *this;
+	--this->_pointer;
+	return (tmp);
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator vector<T, Alloc>::iterator::operator + (int value) const
+{
+	return (vector<T, Alloc>::iterator(this->_pointer + value));
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator vector<T, Alloc>::iterator::operator - (int value) const
+{
+	return (vector<T, Alloc>::iterator(this->_pointer - value));
+}
+
+template < class T, class Alloc >
+bool vector<T, Alloc>::iterator::operator < (const iterator & ref) const
+{
+	return (this->_pointer < ref._pointer);
+}
+
+template < class T, class Alloc >
+bool vector<T, Alloc>::iterator::operator > (const iterator & ref) const
+{
+	return (this->_pointer > ref._pointer);
+}
+
+template < class T, class Alloc >
+bool vector<T, Alloc>::iterator::operator <= (const iterator & ref) const
+{
+	return (this->_pointer <= ref._pointer);
+}
+
+template < class T, class Alloc >
+bool vector<T, Alloc>::iterator::operator >= (const iterator & ref) const
+{
+	return (this->_pointer >= ref._pointer);
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator vector<T, Alloc>::iterator::operator += (int value)
+{
+	this->_pointer += value;
+	return (*this);
+}
+
+template < class T, class Alloc >
+typename vector<T, Alloc>::iterator vector<T, Alloc>::iterator::operator -= (int value)
+{
+	this->_pointer -= value;
+	return (*this);
+}
+
+template < class T, class Alloc >
+T & vector<T, Alloc>::iterator::operator [] (int value) const
+{
+	return (*(this->_pointer + value));
+}
+
+template < class T, class Alloc >
+vector<T, Alloc>::iterator::~iterator()
+{
+}

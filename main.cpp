@@ -12,16 +12,14 @@
 
 #include "vector.hpp"
 #include <iostream>
+#include <vector>
 
 int main(void)
 {
-	vector<int> v1(10);
-	for (int i = 0; i < 10; ++i)
+	vector<int> v1(5);
+	for (int i = 0; i < 4; ++i)
 		v1[i] = i + 1;
-	v1.resize(15, 100);
-	for (int i = 0; i < 15; ++i)
-		std::cout << v1[i] << ' ';
-	std::cout << std::endl;
-	std::cout << v1.size() << std::endl;
-	std::cout << v1.at(20) << std::endl;
+	const vector<int>::iterator it = v1.begin();
+	it[3] = 100;
+	std::cout << it[3] << std::endl;
 }
