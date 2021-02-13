@@ -16,7 +16,7 @@
 #include <iostream>
 #include <memory>
 #include <exception>
-#include "iterator.hpp"
+#include <iterator>
 
 template < class T, class Alloc = std::allocator<T> >
 class vector
@@ -27,7 +27,7 @@ public:
 	{
 	public:
 
-		typedef random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 
 	private:
 
@@ -129,7 +129,12 @@ public:
 			return (*this);
 		};
 
-		T & operator [] (int value) const
+		T & operator [] (int value)
+		{
+			return (*(this->_pointer + value));
+		};
+
+		const T & operator [] (int value) const
 		{
 			return (*(this->_pointer + value));
 		};
@@ -152,6 +157,7 @@ private:
 	pointer		_data;
 	size_type	_size;
 	size_type	_capacity;
+	Alloc	_al;
 
 public: /* MEMBER_FUNCTIONS */
 
@@ -159,7 +165,7 @@ public: /* MEMBER_FUNCTIONS */
 	{
 	};
 
-	explicit vector (size_type n, value_type init_value = value_type()): _data(new T[n]), _size(n), _capacity(n)
+	explicit vector (size_type n, value_type init_value = value_type()): _data(_al.allocate(n)), _size(n), _capacity(n)
 	{
 		size_type i;
 
@@ -170,10 +176,10 @@ public: /* MEMBER_FUNCTIONS */
 	/*template < class InputIterator >
 	vector (InputIterator first, InputIterator last)
 	{
-		return ; 주석처리하지 않을 시 위의 생성자가 호출이 안되는 문제
+		return ; //주석처리하지 않을 시 위의 생성자가 호출이 안되는 문제
 	};*/
 
-	vector (const vector & ref): _data(new value_type[ref._size]), _size(ref._size)
+	vector (const vector & ref): _data(_al.allocate(ref._capacity)), _size(ref._size), _capacity(ref._capacity)
 	{
 		size_type i;
 
@@ -183,24 +189,26 @@ public: /* MEMBER_FUNCTIONS */
 
 	vector & operator = (const vector & ref)
 	{
-		size_type i;
-
-		if (this->_capacity < ref._capacity)
+		if (_data != NULL)
 		{
-			if (this->_data != NULL)
-				delete[] this->_data;
+			clear();
+			_al.deallocate(_data, _capacity);
 		}
-		this->_size = ref._size;
-		this->_data = new T[ref._size];
-		for (i = 0; i < ref._size; ++i)
-			this->_data[i] = ref._data[i];
+		_size = ref._size;
+		_capacity = ref._capacity;
+		_data = _al.allocate(_capacity);
+		for (size_type i = 0; i < _size; ++i)
+			_data[i] = ref._data[i];
 		return (*this);
 	};
 
 	virtual ~vector()
 	{
-		if (this->_data != NULL)
-			delete[] this->_data;
+		if (_data != NULL)
+		{
+			clear();
+			_al.deallocate(_data, _capacity);
+		}
 	};
 
 public: /* ITERATORS */
@@ -239,24 +247,22 @@ public: /* CAPACITY */
 		return (size_type(-1) / sizeof(value_type));
 	};
 
-	void resize (size_type n, T val = 0)
+	void resize (size_type n, value_type val = value_type())
 	{
-		size_type			i = 0;
-		vector<T, Alloc>	tmp(n, val);
+		size_type			i;
+		vector<T, Alloc>	tmp((_capacity > n ? _capacity : n));
 
-		if (this->_size == n)
-			return ;
-		while (i < this->_size)
-		{
-			tmp[i] = this->_data[i];
-			++i;
-		}
+		for (i = 0; i < this->_size; ++i)
+			tmp[i] = _data[i];
+		for (; i < n; ++i)
+			tmp[i] = val;
+		tmp._size = n;
 		*this = tmp;
 	};
 
 	size_type capacity() const
 	{
-		return (this->_size); //미완
+		return (this->_capacity);
 	};
 
 	bool empty() const
@@ -268,14 +274,19 @@ public: /* CAPACITY */
 	{
 		pointer tmp;
 
-		if (_capacity >= n || n == 0)
-			return;
-		tmp = new T[n];
-		for (size_type i = 0; i < _size; i++)
-			new_arr[i] = _data[i];
-		delete[] _data;
-		_data = new_arr;
+		if (_capacity >= n)
+			return ;
+		if (n == 0)
+			return ;
+		tmp = _al.allocate(n);
+		for (size_type i = 0; i < _size; ++i)
+		{
+			_al.construct(&tmp[i], _data[i]);
+			_al.destroy(_data + i);
+		}
+		_al.deallocate(_data, _capacity);
 		_capacity = n;
+		_data = tmp;
 	}
 
 public: /* ELEMENT_ACCESS */
@@ -326,54 +337,58 @@ public: /* ELEMENT_ACCESS */
 
 public: /* MODIFIERS */
 
-	void insert(iterator pos, size_type count, const value_type &value)
+	void push_back (const value_type& val)
 	{
-		size_type index = pos._e - _arr;
-		if (!count)
-			return;
+		if (_size == _capacity)
+			reserve((_capacity == 0 ? 1 : (_capacity * 2)));
+		_data[_size] = val;
+		_size += 1;
+	};
 
-		reserve(_len + count); // reserve after calculating the index!
-		// (otherwhise iterator `pos` is invalidated)
-
-		std::allocator<T> alloc;
-
-		for (ptrdiff_t i = _len - 1; i >= (ptrdiff_t)index; i--)
+	void pop_back()
+	{
+		if (_size)
 		{
-			// move elements count times to the right
-			alloc.construct(&_arr[i + count], _arr[i]); // copy constructor
-			alloc.destroy(&_arr[i]);					// call destructor
+			_al.destroy(_data + (_size - 1));
+			--_size;
 		}
+	};
 
-		for (size_type i = index; i < index + count; i++)
-			alloc.construct(&_arr[i], value); // copy constructor
-
-		_len += count;
-	}
+	void clear()
+	{
+		for (size_type i = 0; i < _size; ++i)
+			_al.destroy(_data + i);
+		_size = 0;
+	};
 
 };
 
 template < class T >
 typename vector<T>::VectorIterator operator + (int value, typename vector<T>::VectorIterator It)
 {
-	return (typename vector<T>::VectorIterator(It + value));
+	typename vector<T>::iterator ret(It);
+	return (ret += value);
 };
 
 template < class T >
 typename vector<T>::VectorIterator operator + (typename vector<T>::VectorIterator It, int value)
 {
-	return (typename vector<T>::VectorIterator(It + value));
+	typename vector<T>::iterator ret(It);
+	return (ret += value);
 };
 
 template < class T >
 typename vector<T>::VectorIterator operator - (int value, typename vector<T>::VectorIterator It)
 {
-	return (typename vector<T>::VectorIterator(It - value));
+	typename vector<T>::iterator ret(It);
+	return (ret -= value);
 };
 
 template < class T >
 typename vector<T>::VectorIterator operator - (typename vector<T>::VectorIterator It, int value)
 {
-	return (typename vector<T>::VectorIterator(It - value));
+	typename vector<T>::iterator ret(It);
+	return (ret -= value);
 };
 
 #endif
