@@ -14,56 +14,34 @@
 #include "vector.hpp"
 #include <vector>
 
-class test
+template < class vector >
+void print_all_vector(vector a)
 {
-public:
-	test()
-	{
-	};
-	virtual ~test()
-	{
-		std::cout << "test destroyed" << std::endl;
-	};
-};
+	typename vector::iterator begin = a.begin();
+	typename vector::iterator end = a.end();
+	for (; begin != end; ++begin)
+		std::cout << *begin << ' ';
+	std::cout << std::endl;
+	std::cout << "size: " << a.size() << std::endl << "capacity: " << a.capacity() << std::endl;
+}
 
-int main(void)
+int main ()
 {
-	/*{
-		vector<test> a;
+	{
+		std::vector<int> a;
 		a.push_back(10);
 		a.push_back(20);
 		a.push_back(30);
-		a.push_back(40);
-		a.pop_back();
-		std::cout << a[0] << ' ' << a.capacity() << std::endl;
-		std::cout << a[1] << ' ' << a.capacity() << std::endl;
-		std::cout << a[2] << ' ' << a.capacity() << std::endl;
-		std::cout << a[3] << ' ' << a.capacity() << std::endl;
+		std::vector<int> b(a.begin(), a.end());
+		print_all_vector(b);
 	}
-	std::cout << "------------------" << std::endl;
+	std::cout << "-------------------" << std::endl;
 	{
-		std::vector<test> a;
+		ft::vector<int> a;
 		a.push_back(10);
 		a.push_back(20);
 		a.push_back(30);
-		a.push_back(40);
-		a.pop_back();
-		std::cout << a[0] << ' ' << a.capacity() << std::endl;
-		std::cout << a[1] << ' ' << a.capacity() << std::endl;
-		std::cout << a[2] << ' ' << a.capacity() << std::endl;
-		std::cout << a[3] << ' ' << a.capacity() << std::endl;
-	}*/
-	{
-		test sss;
-		vector<test> a;
-		a.push_back(sss);
-		a.pop_back();
-	}
-	std::cout << "------------------" << std::endl;
-	{
-		test sss;
-		std::vector<test> a;
-		a.push_back(sss);
-		a.pop_back();
+		ft::vector<int> b(a.begin(), a.end());
+		print_all_vector(b);
 	}
 }
