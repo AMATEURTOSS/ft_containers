@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42seoul.kr>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/08 02:18:38 by yochoi            #+#    #+#             */
-/*   Updated: 2021/02/08 02:18:38 by yochoi           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <iostream>
 #include "vector.hpp"
+#include "list.hpp"
+#include <list>
 #include <vector>
 
 template < class vector >
@@ -22,26 +12,45 @@ void print_all_vector(vector a)
 	for (; begin != end; ++begin)
 		std::cout << *begin << ' ';
 	std::cout << std::endl;
-	std::cout << "size: " << a.size() << std::endl << "capacity: " << a.capacity() << std::endl;
+	std::cout << "size: " << a.size()<< std::endl << "capacity: " << a.capacity() << std::endl;
+}
+
+template < class list >
+void print_all_list(list & a)
+{
+	typename list::iterator begin = a.begin();
+	typename list::iterator end = a.end();
+	for (; begin != end; ++begin)
+	{
+		std::cout << *begin << ' ';
+	}
+	std::cout << std::endl;
+	std::cout << "size: " << a.size() <<  std::endl;
 }
 
 int main ()
 {
 	{
-		std::vector<int> a;
-		a.push_back(10);
-		a.push_back(20);
-		a.push_back(30);
-		std::vector<int> b(a.begin(), a.end());
-		print_all_vector(b);
+		std::list<int> mylist1, mylist2;
+		std::list<int>::iterator it;
+		for (int i = 0; i < 4; ++i)
+			mylist1.push_back(i);
+		for (int i = 5; i < 9; ++i)
+			mylist2.push_back(i);
+		mylist1.splice(mylist1.begin(), mylist2, mylist2.begin(), mylist2.end());
+		print_all_list(mylist1);
+		print_all_list(mylist2);
 	}
 	std::cout << "-------------------" << std::endl;
 	{
-		ft::vector<int> a;
-		a.push_back(10);
-		a.push_back(20);
-		a.push_back(30);
-		ft::vector<int> b(a.begin(), a.end());
-		print_all_vector(b);
+		ft::list<int> mylist1, mylist2;
+		ft::list<int>::iterator it;
+		for (int i = 0; i < 4; ++i)
+			mylist1.push_back(i);
+		for (int i = 5; i < 9; ++i)
+			mylist2.push_back(i);
+		mylist1.splice(mylist1.begin(), mylist2, mylist2.begin(), mylist2.end());
+		print_all_list(mylist1);
+		print_all_list(mylist2);
 	}
 }

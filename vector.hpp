@@ -1,22 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vector.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42seoul.kr>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 15:57:06 by yochoi            #+#    #+#             */
-/*   Updated: 2021/02/05 21:20:15 by yochoi           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <iostream>
 #include <memory>
 #include <exception>
 #include <iterator>
+#include <limits>
+#include "iterator.hpp"
 
 namespace ft
 {
@@ -29,9 +18,10 @@ namespace ft
 		{
 		public:
 
-			typedef std::random_access_iterator_tag iterator_category;
+			typedef T								value_type;
+			typedef ft::random_access_iterator_tag	iterator_category;
 
-		private:
+		protected:
 
 			T *		_pointer;
 
@@ -68,9 +58,9 @@ namespace ft
 				return (*this->_pointer);
 			};
 
-			T & operator -> () const
+			T * operator -> () const
 			{
-				return (*this->_pointer); // 미완
+				return (this->_pointer);
 			};
 
 			VectorIterator & operator ++ (/* Prefix increment operator. */)
@@ -162,12 +152,15 @@ namespace ft
 
 		typedef T											value_type;
 		typedef std::size_t									size_type;
+		typedef std::ptrdiff_t                              difference_type;
 		typedef T &											reference;
 		typedef const T &									const_reference;
 		typedef T *											pointer;
 		typedef const T *									const_pointer;
 		typedef typename vector<T>::VectorIterator			iterator;
 		typedef const typename vector<T>::VectorIterator	const_iterator;
+		typedef reverse_iterator<iterator>                  reverse_iterator;
+		typedef const reverse_iterator                      const_reverse_iterator;
 
 	private:
 
@@ -194,6 +187,7 @@ namespace ft
 		vector (InputIterator first, InputIterator last
 		  , typename InputIterator::iterator_category isIter = typename InputIterator::iterator_category()): _al(Alloc())
 		{
+			(void)isIter;
 		  	int         i;
 		  	size_type   len;
 
@@ -240,25 +234,43 @@ namespace ft
 
 		iterator begin()
 		{
-			return (iterator((pointer)_data));
+			return (iterator(_data));
 		};
 
 		const_iterator begin() const
 		{
-			return (iterator((const_pointer)_data));
+			return (iterator(_data));
 		};
 
 		iterator end()
 		{
-			return (iterator((pointer)(_data + _size)));
+			return (iterator(_data + _size));
 		};
 
 		const_iterator end() const
 		{
-			return (iterator((const_pointer)(_data + _size)));
+			return (iterator(_data + _size));
 		};
 
-		//rbegin, rend 미완
+		reverse_iterator rbegin()
+		{
+			return (reverse_iterator(_data + _size - 1));
+		};
+
+		const_reverse_iterator rbegin() const
+		{
+			return (const_reverse_iterator(_data + _size - 1));
+		};
+
+		reverse_iterator rend()
+		{
+			return (reverse_iterator(_data - 1));
+		};
+
+		const_reverse_iterator rend() const
+		{
+			return (const_reverse_iterator(_data - 1));
+		};
 
 	public: /* CAPACITY */
 
@@ -380,7 +392,7 @@ namespace ft
 		void assign (InputIterator first, InputIterator last)
 		{
 			pointer tmp;
-			std::ptrdiff_t len;
+			difference_type len;
 
 			len = last - first;
 			tmp = _al.allocate((len > _capacity ? len : _capacity));
@@ -396,10 +408,10 @@ namespace ft
 			_data = tmp;
 		};
 
-		void push_back (const value_type& val)
+		void push_back (const_reference val)
 		{
 			if (_size == _capacity)
-				reserve((_capacity == 0 ? 1 : (_capacity * 2)));
+				reserve((_capacity == 0 ? 1 : (_capacity + 1)));
 			_data[_size] = val;
 			_size += 1;
 		};
@@ -416,13 +428,11 @@ namespace ft
 		iterator insert (iterator position, const value_type& val)
 		{
 			size_type	position_i;
-			size_type	num;
 
 			position_i = &(*position) - _data;
 			if (_capacity - _size < 1)
 				reserve(_capacity * 2);
-			num = _size - position_i;
-			for (size_type i = 0; i < num; ++i)
+			for (size_type i = 0; i < _size - position_i; ++i)
 			{
 				_al.destroy(&_data[_size - i]);
 				_al.construct(&_data[_size - i], _data[_size - i - 1]);
@@ -433,16 +443,88 @@ namespace ft
 			return (iterator(_data + position_i));
 		};
 
-		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last)
+		void insert (iterator position, size_type n, const value_type& val)
 		{
-			/*size_type position_i;
-			size_type new_size;
-			pointer new_data;
+			size_type   position_i;
 
 			position_i = &(*position) - _data;
-			new_size = last - first;
-			new_data = _al.allocate(new_size);미완*/
+			if (_capacity - _size < n)
+				reserve(_size + n);
+			for (size_type i = 0; i < _size - position_i; ++i)
+			{
+				_al.construct(_data + (_capacity - i - 1), _data[_capacity - i - n - 1]);
+				_al.destroy(&_data[_capacity - i - n - 1]);
+			}
+			for (size_type i = 0; i < n; ++i)
+			{
+				_al.construct(_data + position_i, val);
+				++position_i;
+			}
+			_size = _capacity;
+		};
+
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last,
+			   typename InputIterator::iterator_category isIter = typename InputIterator::iterator_category())
+		{
+			(void)isIter;
+			size_type position_i;
+			size_type diff;
+
+			diff = last - first;
+			position_i = &(*position) - _data;
+			if ((_capacity - _size) < diff)
+				reserve(_size + diff);
+			for (size_type i = 0; i < _capacity - diff - position_i; ++i)
+			{
+				_al.construct(_data + (_capacity - i - 1), _data[_capacity - diff - i - 1]);
+				_al.destroy(_data + (_capacity - diff - i - 1));
+			}
+			for (; first != last; ++first)
+			{
+				_al.construct(_data + position_i, *first);
+				++position_i;
+			}
+			_size = _capacity;
+		};
+
+		iterator erase (iterator position)
+		{
+			iterator end;
+
+			end = this->end();
+			_al.destroy(&(*position));
+			for (size_type i = 0; (position + i) != end; ++i)
+			{
+				_al.construct(&(*(position + i)), *((position + i) + 1));
+				_al.destroy(&(*((position + i) + 1)));
+			}
+			--_size;
+			if (_size < _capacity)
+			{
+				_al.deallocate(_data + _size, _capacity - _size);
+				_capacity -= _capacity - _size;
+			}
+			return (position);
+		};
+
+		iterator erase (iterator first, iterator last)
+		{
+			iterator tmp;
+
+			tmp = first;
+			for (; tmp != last; --last)
+				erase(tmp);
+			return (first);
+		};
+
+		void swap (vector& x)
+		{
+			vector<value_type> tmp;
+
+			tmp = *this;
+			*this = x;
+			x = tmp;
 		};
 
 		void clear()
@@ -450,6 +532,13 @@ namespace ft
 			for (size_type i = 0; i < _size; ++i)
 				_al.destroy(_data + i);
 			_size = 0;
+		};
+
+	public: /* ALLOCATOR */
+
+		Alloc get_allocator() const
+		{
+			return (_al);
 		};
 
 	};
@@ -460,6 +549,51 @@ typename ft::vector<T>::VectorIterator operator + (int lhs, typename ft::vector<
 {
 	typename ft::vector<T>::iterator ret(rhs);
 	return (ret += lhs);
+};
+
+template < class T >
+bool operator == (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
+{
+	return ((&(lhs.front())) == (&(rhs.front())));
+};
+
+template < class T >
+bool operator != (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
+{
+	return ((&(lhs.front())) != (&(rhs.front())));
+};
+
+template < class T >
+bool operator < (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
+{
+	return ((&(lhs.front())) < (&(rhs.front())));
+};
+
+template < class T >
+bool operator <= (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
+{
+	return ((&(lhs.front())) <= (&(rhs.front())));
+};
+
+template < class T >
+bool operator > (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
+{
+	return ((&(lhs.front())) > (&(rhs.front())));
+};
+
+template < class T >
+bool operator >= (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
+{
+	return ((&(lhs.front())) >= (&(rhs.front())));
+};
+
+template < class T >
+void swap (ft::vector<T>& x, ft::vector<T>& y)
+{
+	ft::vector<T> tmp;
+	tmp = y;
+	y = x;
+	x = tmp;
 };
 
 #endif

@@ -1,0 +1,474 @@
+#ifndef LIST_HPP
+#define LIST_HPP
+
+#include <memory>
+#include <exception>
+#include <iterator>
+#include <limits>
+#include <algorithm>
+
+namespace ft
+{
+	template < class T, class Alloc = std::allocator<T> >
+	class list
+	{
+	private:
+
+		class node
+		{
+		public:
+			node * prev;
+			node * next;
+			T val;
+		public:
+			node(): prev(NULL), next(NULL), val(T()) {};
+		};
+
+	public:
+
+		class ListIterator
+		{
+		public:
+
+			typedef T								value_type;
+			typedef ft::bidirectional_iterator_tag	iterator_category;
+
+		protected:
+
+			node *		_pointer;
+
+		public:
+
+			ListIterator(): _pointer(NULL) {};
+
+			ListIterator(node * pointer): _pointer(pointer) {};
+
+			ListIterator(const typename list<T>::ListIterator & ref): _pointer(ref._pointer) {};
+
+			ListIterator & operator = (const typename list<T>::ListIterator & ref)
+			{
+				this->_pointer = ref._pointer;
+				return (*this);
+			};
+
+			virtual ~ListIterator() {};
+
+		public:
+
+			bool operator == (const typename list<T>::ListIterator & ref) const
+			{
+				return (_pointer == ref._pointer);
+			};
+
+			bool operator != (const typename list<T>::ListIterator & ref) const
+			{
+				return (_pointer != ref._pointer);
+			};
+
+			T & operator * () const
+			{
+				return (_pointer->val);
+			};
+
+			node * operator -> () const
+			{
+				return (_pointer);
+			};
+
+			ListIterator & operator ++ (/* Prefix increment operator. */)
+			{
+				_pointer = _pointer->next;
+				return (*this);
+			};
+
+			ListIterator operator ++ (int/* Postfix increment operator. */)
+			{
+				ListIterator ret = *this;
+				_pointer = _pointer->next;
+				return (ret);
+			};
+
+			ListIterator & operator -- (/* Prefix decrement operator. */)
+			{
+				_pointer = _pointer->prev;
+				return (*this);
+			};
+
+			ListIterator operator -- (int/* Postfix decrement operator. */)
+			{
+				ListIterator ret = *this;
+				_pointer = _pointer->prev;
+				return (ret);
+			};
+
+			node * get_pointer()
+			{
+				return (_pointer);
+			};
+
+		};
+
+	public:
+
+		typedef T												value_type;
+		typedef std::size_t										size_type;
+		typedef std::ptrdiff_t									difference_type;
+		typedef T &												reference;
+		typedef const T &										const_reference;
+		typedef T *												pointer;
+		typedef const T *										const_pointer;
+		typedef typename list<value_type>::ListIterator			iterator;
+		typedef const typename list<value_type>::ListIterator	const_iterator;
+		typedef reverse_iterator<iterator>                  	reverse_iterator;
+		typedef const reverse_iterator                      	const_reverse_iterator;
+
+	public:
+
+		node *		_head;
+		node *		_tail;
+		size_type	_size;
+
+	public: /* MEMBER_FUNCTIONS */
+
+		explicit list (): _head	(new node()), _tail(new node()), _size(0)
+		{
+			_head->next = _tail;
+			_tail->prev = _head;
+		};
+
+		explicit list (size_type n, const value_type& val = value_type()): _head(new node()), _tail(new node()), _size(0)
+		{
+			_head->next = _tail;
+			_tail->prev = _head;
+			this->assign(n, val);
+		};
+
+		template <class InputIterator>
+		list (InputIterator first, InputIterator last,
+				typename InputIterator::iterator_category isIter = typename InputIterator::iterator_category()): _head(new node()), _tail(new node()), _size(0)
+		{
+			(void)isIter;
+
+			_head->next = _tail;
+			_tail->prev = _head;
+			this->template assign(first, last);
+		};
+
+		list (const list & x): _head(new node()), _tail(new node()), _size(0)
+		{
+			iterator first;
+			iterator last;
+
+			first = x.begin();
+			last = x.end();
+			_head->next = _tail;
+			_tail->prev = _head;
+			this->template assign(first, last);
+		};
+
+		list& operator = (const list& x)
+		{
+			iterator first;
+			iterator last;
+
+			clear();
+			first = x.begin();
+			last = x.end();
+			_head->next = _tail;
+			_tail->prev = _head;
+			this->template assign(first, last);
+			return (*this);
+		};
+
+		virtual ~list()
+		{
+			clear();
+			delete _head;
+			delete _tail;
+			_head = NULL;
+			_tail = NULL;
+		};
+
+	public: /* ITERATORS */
+
+		iterator begin()
+		{
+			return (iterator(_head->next));
+		};
+
+		const_iterator begin() const
+		{
+			return (iterator(_head->next));
+		};
+
+		iterator end()
+		{
+			return (iterator(_tail));
+		};
+
+		const_iterator end() const
+		{
+			return (iterator(_tail));
+		};
+
+		reverse_iterator rbegin()
+		{
+			return (reverse_iterator(_tail->prev));
+		};
+
+		const_reverse_iterator rbegin() const
+		{
+			return (reverse_iterator(_tail->prev));
+		};
+
+		reverse_iterator rend()
+		{
+			return (reverse_iterator(_head));
+		};
+
+		const_reverse_iterator rend() const
+		{
+			return (reverse_iterator(_head));
+		};
+
+	public: /* CAPACITY */
+
+		bool empty() const
+		{
+			return (_size == 0);
+		};
+
+		size_type size() const
+		{
+			return (_size);
+		};
+
+		size_type max_size() const
+		{
+			return (size_type(-1) / sizeof(value_type)); //이상함
+		};
+
+	public: /* ELEMENT_ACCESS */
+
+		reference front()
+		{
+			return (_head->next->val);
+		};
+
+		const_reference front() const
+		{
+			return (_head->next->val);
+		};
+
+		reference back()
+		{
+			return (_tail->prev->val);
+		};
+
+		const_reference back() const
+		{
+			return (_tail->prev->val);
+		};
+
+	public: /* MODIFIERS */
+
+		template <class InputIterator>
+		void assign (InputIterator first, InputIterator last)
+		{
+			clear();
+			node * iter;
+			node * prev;
+
+			clear();
+			iter = _head;
+			prev = _head;
+			while (first != last)
+			{
+				iter->next = new node();
+				iter = iter->next;
+				iter->prev = prev;
+				iter->val = *first;
+				prev = iter;
+				++first;
+				++_size;
+			}
+			iter->next = _tail;
+			_tail->prev = iter;
+		};
+
+		void assign (size_type n, const value_type& val)
+		{
+			clear();
+			node * iter;
+			node * prev;
+
+			_head->next = new node();
+			iter = _head->next;
+			iter->prev = _head;
+			iter->val = val;
+			prev = iter;
+			for (size_type i = 1; i < n; ++i)
+			{
+				iter->next = new node();
+				iter = iter->next;
+				iter->prev = prev;
+				iter->next = NULL;
+				iter->val = val;
+				prev = iter;
+			}
+			iter->next = _tail;
+			_tail->prev = iter;
+			_size = n;
+		};
+
+		void push_front (const value_type& val)
+		{
+			node * new_node;
+
+			new_node = new node();
+			new_node->next = _head->next;
+			new_node->prev = _head;
+			new_node->val = val;
+			_head->next = new_node;
+			new_node->next->prev = new_node;
+			_size += 1;
+		};
+
+		void pop_front()
+		{
+			node * next;
+
+			next = _head->next->next;
+			delete _head->next;
+			_head->next = next;
+			next->prev = _head;
+			_size -= 1;
+		};
+
+		void push_back (const value_type& val)
+		{
+			node * new_node;
+
+			new_node = new node();
+			new_node->next = _tail;
+			new_node->prev = _tail->prev;
+			new_node->val = val;
+			_tail->prev = new_node;
+			new_node->prev->next = new_node;
+			_size += 1;
+		};
+
+		void pop_back ()
+		{
+			node * prev;
+
+			prev = _tail->prev->prev;
+			delete _tail->prev;
+			_tail->prev = prev;
+			prev->next= _tail;
+			_size -= 1;
+		};
+
+		iterator insert (iterator position, const value_type& val)
+		{
+			node * new_node;
+
+			new_node = new node();
+			new_node->next = position->prev->next;
+			new_node->prev = position->prev;
+			new_node->val = val;
+			position->prev->next = new_node;
+			position->prev = new_node;
+			_size += 1;
+			return (--position);
+		};
+
+		void insert (iterator position, size_type n, const value_type& val)
+		{
+			for (size_type i = 0; i < n; ++i)
+				this->insert(position, val);
+		};
+
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last)
+		{
+			for (; first != last; ++first)
+				this->insert(position, *first);
+		};
+
+		iterator erase (iterator position)
+		{
+			node * dest;
+
+			dest = position->next->prev;
+			position->next->prev = position->prev;
+			position->prev->next = position->next;
+			delete dest;
+			_size -= 1;
+			return (position->next);
+		};
+
+		iterator erase (iterator first, iterator last)
+		{
+			for (; first != last; ++first)
+				this->erase(first);
+			return (last);
+		};
+
+		void swap (list& x)
+		{
+			std::swap(_head, x._head);
+			std::swap(_tail, x._tail);
+			std::swap(_size, x._size);
+		};
+
+		void resize (size_type n, value_type val = value_type())
+		{
+			if (_size == n)
+				return ;
+			if (_size > n)
+				for (; _size > n;)
+					this->erase(--(this->end()));
+			if (_size < n)
+				for (size_type i = 0; i < n - _size; ++i)
+					this->insert(this->end(), val);
+		};
+
+		void clear()
+		{
+			iterator begin;
+			iterator end;
+
+			begin = this->begin();
+			end = this->end();
+			while (begin != end)
+			{
+				delete &(*begin++);
+			}
+			_size = 0;
+		};
+
+	public: /* OPERATIONS */
+
+		void splice (iterator position, list& x)
+		{
+			this->insert(position, x.begin(), x.end());
+			x.clear();
+		};
+
+		void splice (iterator position, list& x, iterator i)
+		{
+			this->insert(position, *i);
+			x.erase(i);
+		};
+
+		void splice (iterator position, list& x, iterator first, iterator last)
+		{
+			this->insert(position, first, last);
+			x.erase(first, last);
+		};
+
+	};
+}
+
+#endif
