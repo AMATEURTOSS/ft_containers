@@ -374,13 +374,13 @@ namespace ft
 			node * new_node;
 
 			new_node = new node();
-			new_node->next = position->prev->next;
-			new_node->prev = position->prev;
 			new_node->val = val;
-			position->prev->next = new_node;
+			new_node->next = position.get_pointer();
+			new_node->prev = position->prev;
 			position->prev = new_node;
-			_size += 1;
-			return (--position);
+			new_node->prev->next = new_node;
+			++_size;
+			return (position->prev);
 		};
 
 		void insert (iterator position, size_type n, const value_type& val)
@@ -390,10 +390,12 @@ namespace ft
 		};
 
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last)
+		void insert (iterator position, InputIterator first, InputIterator last,
+			   typename InputIterator::iterator_category isIter = typename InputIterator::iterator_category())
 		{
-			for (; first != last; ++first)
-				this->insert(position, *first);
+			(void)isIter;
+			for (; first != last;)
+				this->insert(position, *first++);
 		};
 
 		iterator erase (iterator position)
@@ -410,8 +412,8 @@ namespace ft
 
 		iterator erase (iterator first, iterator last)
 		{
-			for (; first != last; ++first)
-				this->erase(first);
+			for (; first != last;)
+				this->erase(first++);
 			return (last);
 		};
 
@@ -443,7 +445,7 @@ namespace ft
 			end = this->end();
 			while (begin != end)
 			{
-				delete &(*begin++);
+				delete (begin++.get_pointer());
 			}
 			_size = 0;
 		};

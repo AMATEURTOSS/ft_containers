@@ -37,7 +37,7 @@ int main ()
 			mylist1.push_back(i);
 		for (int i = 5; i < 9; ++i)
 			mylist2.push_back(i);
-		mylist1.splice(mylist1.begin(), mylist2, mylist2.begin(), mylist2.end());
+		mylist1.splice(mylist1.end(), mylist2, mylist2.begin(), mylist2.end());
 		print_all_list(mylist1);
 		print_all_list(mylist2);
 	}
@@ -49,7 +49,7 @@ int main ()
 			mylist1.push_back(i);
 		for (int i = 5; i < 9; ++i)
 			mylist2.push_back(i);
-		mylist1.splice(mylist1.begin(), mylist2, mylist2.begin(), mylist2.end());
+		mylist1.splice(mylist1.end(), mylist2, mylist2.begin(), mylist2.end());
 		print_all_list(mylist1);
 		print_all_list(mylist2);
 	}
