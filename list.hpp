@@ -30,8 +30,14 @@ namespace ft
 		{
 		public:
 
-			typedef T								value_type;
-			typedef ft::bidirectional_iterator_tag	iterator_category;
+			typedef T												value_type;
+			typedef std::size_t										size_type;
+			typedef std::ptrdiff_t									difference_type;
+			typedef T &												reference;
+			typedef const T &										const_reference;
+			typedef T *												pointer;
+			typedef const T *										const_pointer;
+			typedef std::bidirectional_iterator_tag					iterator_category;
 
 		protected:
 
@@ -245,7 +251,7 @@ namespace ft
 
 		size_type max_size() const
 		{
-			return (size_type(-1) / sizeof(value_type)); //이상함
+			return (size_type(-1) / sizeof(value_type));
 		};
 
 	public: /* ELEMENT_ACCESS */
@@ -448,6 +454,8 @@ namespace ft
 				delete (begin++.get_pointer());
 			}
 			_size = 0;
+			_head->next = _tail;
+			_tail->prev = _head;
 		};
 
 	public: /* OPERATIONS */
@@ -469,6 +477,144 @@ namespace ft
 			this->insert(position, first, last);
 			x.erase(first, last);
 		};
+
+		void remove (const value_type& val)
+		{
+			iterator first;
+			iterator last;
+
+			first = this->begin();
+			last = this->end();
+			while (first != last)
+			{
+				if (first->val == val)
+					erase(first++);
+				else
+					++first;
+			}
+		};
+
+		template <class Predicate>
+		void remove_if (Predicate pred)
+		{
+			iterator first;
+			iterator last;
+
+			first = this->begin();
+			last = this->end();
+			while (first != last)
+			{
+				if (pred(*first))
+					erase(first++);
+				else
+					++first;
+			}
+		};
+
+		void unique ()
+		{
+			iterator first;
+			iterator last;
+
+			first = this->begin();
+			last = this->end();
+			while (first != last)
+			{
+				if (*first == first->next->val)
+					this->erase(iterator(first->next));
+				else
+					++first;
+			}
+		};
+
+		template <class BinaryPredicate>
+		void unique (BinaryPredicate binary_pred)
+		{
+			iterator first;
+			iterator last;
+
+			first = this->begin();
+			last = this->end();
+			while (first != last)
+			{
+				if (binary_pred(*first, first->next->val))
+					this->erase(iterator(first->next));
+				else
+					++first;
+			}
+		};
+
+		void merge (list& x)
+		{
+			(void)x;
+		};
+
+		template <class Compare>
+		void merge (list& x, Compare comp)
+		{
+			(void)x;
+			(void)comp;
+		};
+
+		void sort()
+		{
+			node *first = this->begin().get_pointer();
+			node *next = first->next;
+			node *before;
+			node *after;
+			while (next != _tail)
+			{
+				if (next->val < first->val)
+				{
+					before = first->prev;
+					after = next->next;
+					before->next = next;
+					next->prev = before;
+					next->next = first;
+					first->prev = next;
+					first->next = after;
+					after->prev = first;
+					first = this->begin().get_pointer();
+					next = first->next;
+				}
+				else
+				{
+					first = first->next;
+					next = next->next;
+				}
+			}
+		};
+
+		template <class Compare>
+		void sort (Compare comp)
+		{
+			node *first = this->begin().get_pointer();
+			node *next = first->next;
+			node *before;
+			node *after;
+			while (next != _tail)
+			{
+				if (comp(next->val, first->val))
+				{
+					before = first->prev;
+					after = next->next;
+					before->next = next;
+					next->prev = before;
+					next->next = first;
+					first->prev = next;
+					first->next = after;
+					after->prev = first;
+					first = this->begin().get_pointer();
+					next = first->next;
+				}
+				else
+				{
+					first = first->next;
+					next = next->next;
+				}
+			}
+		};
+
 
 	};
 }
