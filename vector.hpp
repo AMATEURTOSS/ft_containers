@@ -230,7 +230,7 @@ namespace ft
 			return (*this);
 		};
 
-		virtual ~vector()
+		~vector()
 		{
 			clear();
 			_al.deallocate(_data, _capacity);
@@ -287,7 +287,7 @@ namespace ft
 
 		size_type max_size() const
 		{
-			return (size_type(-1) / sizeof(value_type));
+			return (std::allocator<value_type>().max_size());
 		};
 
 		void resize (size_type n, value_type val = value_type())
@@ -310,7 +310,7 @@ namespace ft
 
 		bool empty() const
 		{
-			return (this->_size == 0 ? true : false);
+			return (this->_size == 0);
 		};
 
 		void reserve(size_type n)

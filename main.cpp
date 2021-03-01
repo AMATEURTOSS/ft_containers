@@ -28,61 +28,20 @@ void print_all_list(list & a)
 	std::cout << "size: " << a.size() <<  std::endl;
 }
 
-bool compare_nocase (const std::string& first, const std::string& second)
-{
-	unsigned int i=0;
-	while ( (i<first.length()) && (i<second.length()) )
-	{
-		if (tolower(first[i])<tolower(second[i])) return true;
-		else if (tolower(first[i])>tolower(second[i])) return false;
-		++i;
-	}
-	return ( first.length() < second.length() );
-}
+bool mycomparison (double first, double second)
+{ return ( int(first)<int(second) ); }
+
+class myClass {};
 
 int main ()
 {
 	{
-		std::list<std::string> mylist;
-		std::list<std::string>::iterator it;
-		mylist.push_back("one");
-		mylist.push_back("two");
-		mylist.push_back("Three");
-
-		mylist.sort();
-
-		std::cout << "mylist contains:";
-		for (it = mylist.begin(); it != mylist.end(); ++it)
-			std::cout << ' ' << *it;
-		std::cout << '\n';
-
-		mylist.sort(compare_nocase);
-
-		std::cout << "mylist contains:";
-		for (it = mylist.begin(); it != mylist.end(); ++it)
-			std::cout << ' ' << *it;
-		std::cout << '\n';
+		std::list<myClass> a;
+		std::cout << a.max_size() << std::endl;
 	}
 	std::cout << "------------------------------" << std::endl;
 	{
-		ft::list<std::string> mylist;
-		ft::list<std::string>::iterator it;
-		mylist.push_back("one");
-		mylist.push_back("two");
-		mylist.push_back("Three");
-
-		mylist.sort();
-
-		std::cout << "mylist contains:";
-		for (it = mylist.begin(); it != mylist.end(); ++it)
-			std::cout << ' ' << *it;
-		std::cout << '\n';
-
-		mylist.sort(compare_nocase);
-
-		std::cout << "mylist contains:";
-		for (it = mylist.begin(); it != mylist.end(); ++it)
-			std::cout << ' ' << *it;
-		std::cout << '\n';
+		ft::list<myClass> a;
+		std::cout << a.max_size() << std::endl;
 	}
 }

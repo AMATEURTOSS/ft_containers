@@ -30,7 +30,7 @@ namespace ft
 		{
 		public:
 
-			typedef T												value_type;
+			typedef node											value_type;
 			typedef std::size_t										size_type;
 			typedef std::ptrdiff_t									difference_type;
 			typedef T &												reference;
@@ -186,7 +186,7 @@ namespace ft
 			return (*this);
 		};
 
-		virtual ~list()
+		~list()
 		{
 			clear();
 			delete _head;
@@ -251,7 +251,7 @@ namespace ft
 
 		size_type max_size() const
 		{
-			return (size_type(-1) / sizeof(value_type));
+			return (std::allocator<node>().max_size());
 		};
 
 	public: /* ELEMENT_ACCESS */
@@ -546,14 +546,15 @@ namespace ft
 
 		void merge (list& x)
 		{
-			(void)x;
+			this->splice(this->end(), x);
+			this->sort();
 		};
 
 		template <class Compare>
 		void merge (list& x, Compare comp)
 		{
-			(void)x;
-			(void)comp;
+			this->splice(this->end(), x);
+			this->sort(comp);
 		};
 
 		void sort()
@@ -615,6 +616,21 @@ namespace ft
 			}
 		};
 
+		void reverse()
+		{
+			reverse_iterator rfirst;
+			reverse_iterator rend;
+			list tmp;
+
+			rfirst = this->rbegin();
+			rend = this->rend();
+			while (rfirst != rend)
+			{
+				tmp.push_back(*rfirst);
+				++rfirst;
+			}
+			*this = tmp;
+		};
 
 	};
 }
