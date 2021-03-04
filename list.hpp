@@ -6,6 +6,9 @@
 #include <iterator>
 #include <limits>
 #include <algorithm>
+#include "iterator.hpp"
+#include "is_iterator.hpp"
+#include "algorithm.hpp"
 
 namespace ft
 {
@@ -57,7 +60,7 @@ namespace ft
 				return (*this);
 			};
 
-			virtual ~ListIterator() {};
+			~ListIterator() {};
 
 		public:
 
@@ -138,27 +141,28 @@ namespace ft
 
 		explicit list (): _head	(new node()), _tail(new node()), _size(0)
 		{
+			_head->prev = _tail;
 			_head->next = _tail;
 			_tail->prev = _head;
+			_tail->next = _head;
 		};
 
 		explicit list (size_type n, const value_type& val = value_type()): _head(new node()), _tail(new node()), _size(0)
 		{
+			_head->prev = _tail;
 			_head->next = _tail;
 			_tail->prev = _head;
+			_tail->next = _head;
 			this->assign(n, val);
 		};
 
 		template <class InputIterator>
-		list (InputIterator first, InputIterator last,
-				typename InputIterator::iterator_category isIter = typename InputIterator::iterator_category()): _head(new node()), _tail(new node()), _size(0)
+		list (InputIterator first, InputIterator last): _head(new node()), _tail(new node()), _size(0)
 		{
-			(void)isIter;
-
-			_head->next = _tail;
-			_tail->prev = _head;
-			this->template assign(first, last);
+			this->private_iterator_constructor(first, last, typename ft::is_iterator<InputIterator>::val());
 		};
+
+	public:
 
 		list (const list & x): _head(new node()), _tail(new node()), _size(0)
 		{
@@ -167,8 +171,10 @@ namespace ft
 
 			first = x.begin();
 			last = x.end();
+			_head->prev = _tail;
 			_head->next = _tail;
 			_tail->prev = _head;
+			_tail->next = _head;
 			this->template assign(first, last);
 		};
 
@@ -180,8 +186,10 @@ namespace ft
 			clear();
 			first = x.begin();
 			last = x.end();
+			_head->prev = _tail;
 			_head->next = _tail;
 			_tail->prev = _head;
+			_tail->next = _head;
 			this->template assign(first, last);
 			return (*this);
 		};
@@ -281,25 +289,7 @@ namespace ft
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last)
 		{
-			clear();
-			node * iter;
-			node * prev;
-
-			clear();
-			iter = _head;
-			prev = _head;
-			while (first != last)
-			{
-				iter->next = new node();
-				iter = iter->next;
-				iter->prev = prev;
-				iter->val = *first;
-				prev = iter;
-				++first;
-				++_size;
-			}
-			iter->next = _tail;
-			_tail->prev = iter;
+			this->template private_assign(first, last, typename ft::is_iterator<InputIterator>::val());
 		};
 
 		void assign (size_type n, const value_type& val)
@@ -326,6 +316,8 @@ namespace ft
 			_tail->prev = iter;
 			_size = n;
 		};
+
+	public:
 
 		void push_front (const value_type& val)
 		{
@@ -632,6 +624,98 @@ namespace ft
 			*this = tmp;
 		};
 
+	private:
+
+		template < class InputIterator >
+		void private_iterator_constructor(InputIterator first, InputIterator last, ft::truth)
+		{
+			_head->prev = _tail;
+			_head->next = _tail;
+			_tail->prev = _head;
+			_tail->next = _head;
+			this->template assign(first, last);
+		};
+
+		void private_iterator_constructor(size_type n, const value_type & val, ft::falsity)
+		{
+			_head->prev = _tail;
+			_head->next = _tail;
+			_tail->prev = _head;
+			_tail->next = _head;
+			this->assign(n, val);
+		};
+
+		template < class InputIterator >
+		void private_assign(InputIterator first, InputIterator last, ft::truth)
+		{
+			clear();
+			node * iter;
+			node * prev;
+
+			clear();
+			iter = _head;
+			prev = _head;
+			while (first != last)
+			{
+				iter->next = new node();
+				iter = iter->next;
+				iter->prev = prev;
+				iter->val = *first;
+				prev = iter;
+				++first;
+				++_size;
+			}
+			iter->next = _tail;
+			_tail->prev = iter;
+		};
+
+		void private_assign(size_type n, const value_type& val, ft::falsity)
+		{
+			this->assign(n, val);
+		};
+
+	};
+
+	template < class T >
+	bool operator == (const list<T>& lhs, const list<T>& rhs)
+	{
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	};
+
+	template < class T >
+	bool operator != (const typename ft::list<T>& lhs, const typename ft::list<T>& rhs)
+	{
+		return (!(lhs == rhs));
+	};
+
+	template < class T >
+	bool operator < (const typename ft::list<T>& lhs, const typename ft::list<T>& rhs)
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	};
+
+	template < class T >
+	bool operator <= (const typename ft::list<T>& lhs, const typename ft::list<T>& rhs)
+	{
+		return (!(rhs < lhs));
+	};
+
+	template < class T >
+	bool operator > (const typename ft::list<T>& lhs, const typename ft::list<T>& rhs)
+	{
+		return (rhs < lhs);
+	};
+
+	template < class T >
+	bool operator >= (const typename ft::list<T>& lhs, const typename ft::list<T>& rhs)
+	{
+		return (!(lhs < rhs));
+	};
+
+	template <class T, class Alloc>
+	void swap (list<T,Alloc>& x, list<T,Alloc>& y)
+	{
+		x.swap(y);
 	};
 }
 

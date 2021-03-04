@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/admin/Desktop/ft_containers/is_iterator.hpp
+iterator
+-
+
 C:/Users/admin/Desktop/ft_containers/iterator.hpp
 
 C:/Users/admin/Desktop/ft_containers/list.hpp
@@ -19,6 +23,10 @@ limits
 -
 algorithm
 -
+iterator.hpp
+C:/Users/admin/Desktop/ft_containers/iterator.hpp
+is_iterator.hpp
+C:/Users/admin/Desktop/ft_containers/is_iterator.hpp
 
 C:/Users/admin/Desktop/ft_containers/main.cpp
 iostream
@@ -27,10 +35,22 @@ vector.hpp
 C:/Users/admin/Desktop/ft_containers/vector.hpp
 list.hpp
 C:/Users/admin/Desktop/ft_containers/list.hpp
+map.hpp
+C:/Users/admin/Desktop/ft_containers/map.hpp
 list
 -
 vector
 -
+map
+-
+
+C:/Users/admin/Desktop/ft_containers/map.hpp
+pair.hpp
+C:/Users/admin/Desktop/ft_containers/pair.hpp
+list.hpp
+C:/Users/admin/Desktop/ft_containers/list.hpp
+
+C:/Users/admin/Desktop/ft_containers/pair.hpp
 
 C:/Users/admin/Desktop/ft_containers/vector.hpp
 memory

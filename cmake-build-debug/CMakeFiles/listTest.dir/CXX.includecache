@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/admin/Desktop/ft_containers/algorithm.hpp
+
+C:/Users/admin/Desktop/ft_containers/is_iterator.hpp
+iterator
+-
+
+C:/Users/admin/Desktop/ft_containers/iterator.hpp
+
+C:/Users/admin/Desktop/ft_containers/list.hpp
+memory
+-
+exception
+-
+iterator
+-
+limits
+-
+algorithm
+-
+iterator.hpp
+C:/Users/admin/Desktop/ft_containers/iterator.hpp
+is_iterator.hpp
+C:/Users/admin/Desktop/ft_containers/is_iterator.hpp
+algorithm.hpp
+C:/Users/admin/Desktop/ft_containers/algorithm.hpp
+
+C:/Users/admin/Desktop/ft_containers/test/listTest.cpp
+../list.hpp
+C:/Users/admin/Desktop/ft_containers/list.hpp
+iostream
+-
+iomanip
+-
+vector
+-
+cmath
+-
+

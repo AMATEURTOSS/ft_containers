@@ -142,6 +142,32 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+#=============================================================================
+# Target rules for targets named listTest
+
+# Build rule for target.
+listTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 listTest
+.PHONY : listTest
+
+# fast build rule for target.
+listTest/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\listTest.dir\build.make CMakeFiles/listTest.dir/build
+.PHONY : listTest/fast
+
+#=============================================================================
+# Target rules for targets named vectorTest
+
+# Build rule for target.
+vectorTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 vectorTest
+.PHONY : vectorTest
+
+# fast build rule for target.
+vectorTest/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/build
+.PHONY : vectorTest/fast
+
 # target to build an object file
 main.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.obj
@@ -157,6 +183,36 @@ main.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.s
 .PHONY : main.s
 
+# target to build an object file
+test/listTest.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\listTest.dir\build.make CMakeFiles/listTest.dir/test/listTest.obj
+.PHONY : test/listTest.obj
+
+# target to preprocess a source file
+test/listTest.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\listTest.dir\build.make CMakeFiles/listTest.dir/test/listTest.i
+.PHONY : test/listTest.i
+
+# target to generate assembly for a file
+test/listTest.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\listTest.dir\build.make CMakeFiles/listTest.dir/test/listTest.s
+.PHONY : test/listTest.s
+
+# target to build an object file
+test/vectorTest.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/test/vectorTest.obj
+.PHONY : test/vectorTest.obj
+
+# target to preprocess a source file
+test/vectorTest.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/test/vectorTest.i
+.PHONY : test/vectorTest.i
+
+# target to generate assembly for a file
+test/vectorTest.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/test/vectorTest.s
+.PHONY : test/vectorTest.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -165,10 +221,18 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... listTest
 	@echo ... main
+	@echo ... vectorTest
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... test/listTest.obj
+	@echo ... test/listTest.i
+	@echo ... test/listTest.s
+	@echo ... test/vectorTest.obj
+	@echo ... test/vectorTest.i
+	@echo ... test/vectorTest.s
 .PHONY : help
 
 
