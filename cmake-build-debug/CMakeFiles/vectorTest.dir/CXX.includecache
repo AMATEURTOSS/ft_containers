@@ -6,14 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/admin/Desktop/ft_containers/algorithm.hpp
-
-C:/Users/admin/Desktop/ft_containers/is_iterator.hpp
-iterator
--
-
-C:/Users/admin/Desktop/ft_containers/iterator.hpp
-
 C:/Users/admin/Desktop/ft_containers/test/vectorTest.cpp
 ../vector.hpp
 C:/Users/admin/Desktop/ft_containers/vector.hpp
@@ -21,6 +13,8 @@ iomanip
 -
 iostream
 -
+
+C:/Users/admin/Desktop/ft_containers/utils.hpp
 
 C:/Users/admin/Desktop/ft_containers/vector.hpp
 memory
@@ -33,10 +27,6 @@ limits
 -
 iostream
 -
-iterator.hpp
-C:/Users/admin/Desktop/ft_containers/iterator.hpp
-is_iterator.hpp
-C:/Users/admin/Desktop/ft_containers/is_iterator.hpp
-algorithm.hpp
-C:/Users/admin/Desktop/ft_containers/algorithm.hpp
+utils.hpp
+C:/Users/admin/Desktop/ft_containers/utils.hpp
 

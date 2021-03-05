@@ -6,9 +6,7 @@
 #include <iterator>
 #include <limits>
 #include <iostream>
-#include "iterator.hpp"
-#include "is_iterator.hpp"
-#include "algorithm.hpp"
+#include "utils.hpp"
 
 namespace ft
 {
@@ -168,7 +166,7 @@ namespace ft
 		typedef const T *									const_pointer;
 		typedef typename vector<T>::VectorIterator			iterator;
 		typedef const typename vector<T>::VectorIterator	const_iterator;
-		typedef reverse_iterator<iterator>                  reverse_iterator;
+		typedef ft::iterator::reverse_iterator<iterator>    reverse_iterator;
 		typedef const reverse_iterator                      const_reverse_iterator;
 
 	private:
@@ -195,7 +193,7 @@ namespace ft
 		template < class InputIterator >
 		vector (InputIterator first, InputIterator last): _al(Alloc())
 		{
-			this->template private_iterator_constructor(first, last, typename ft::is_iterator<InputIterator>::val());
+			this->template private_iterator_constructor(first, last, typename ft::iterator::is_iterator<InputIterator>::val());
 		};
 
 		vector (const vector & ref): _al(Alloc()), _data(_al.allocate(ref._capacity)), _size(ref._size), _capacity(ref._capacity)
@@ -387,7 +385,7 @@ namespace ft
 		template < class InputIterator >
 		void assign (InputIterator first, InputIterator last)
 		{
-			this->private_iterator_constructor(first, last, typename ft::is_iterator<InputIterator>::val());
+			this->private_iterator_constructor(first, last, typename ft::iterator::is_iterator<InputIterator>::val());
 		};
 
 		void push_back (const_reference val)
@@ -448,7 +446,7 @@ namespace ft
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last)
 		{
-			this->private_insert(position, first, last, typename ft::is_iterator<InputIterator>::val());
+			this->private_insert(position, first, last, typename ft::iterator::is_iterator<InputIterator>::val());
 		};
 
 		iterator erase (iterator position)
@@ -500,7 +498,7 @@ namespace ft
 	private:
 
 		template < class InputIterator >
-		void private_iterator_constructor(InputIterator first, InputIterator last, ft::truth)
+		void private_iterator_constructor(InputIterator first, InputIterator last, ft::iterator::truth)
 		{
 			int         i;
 			size_type   len;
@@ -518,7 +516,7 @@ namespace ft
 			}
 		};
 
-		void private_iterator_constructor(size_type n, value_type init_value, ft::falsity)
+		void private_iterator_constructor(size_type n, value_type init_value, ft::iterator::falsity)
 		{
 			size_type i;
 
@@ -530,7 +528,7 @@ namespace ft
 		};
 
 		template < class InputIterator >
-		void private_assign(InputIterator first, InputIterator last, ft::truth)
+		void private_assign(InputIterator first, InputIterator last, ft::iterator::truth)
 		{
 			pointer tmp;
 			difference_type len;
@@ -549,13 +547,13 @@ namespace ft
 			_data = tmp;
 		}
 
-		void private_assign(size_type n, const value_type& val, ft::falsity)
+		void private_assign(size_type n, const value_type& val, ft::iterator::falsity)
 		{
 			this->assign(n, val);
 		};
 
 		template < class InputIterator >
-		void private_insert(iterator position, InputIterator first, InputIterator last, ft::truth)
+		void private_insert(iterator position, InputIterator first, InputIterator last, ft::iterator::truth)
 		{
 			size_type position_i;
 			size_type diff;
@@ -577,7 +575,7 @@ namespace ft
 			_size = _capacity;
 		};
 
-		void private_insert(iterator position, size_type n, const value_type& val, ft::falsity)
+		void private_insert(iterator position, size_type n, const value_type& val, ft::iterator::falsity)
 		{
 			this->insert(position, n, val);
 		};
@@ -595,7 +593,7 @@ typename ft::vector<T>::VectorIterator operator + (int lhs, typename ft::vector<
 template < class T >
 bool operator == (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
 {
-	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	return (ft::algorithm::equal(lhs.begin(), lhs.end(), rhs.begin()));
 };
 
 template < class T >
@@ -607,7 +605,7 @@ bool operator != (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
 template < class T >
 bool operator < (const ft::vector<T>& lhs, const ft::vector<T>& rhs)
 {
-	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	return (ft::algorithm::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 };
 
 template < class T >

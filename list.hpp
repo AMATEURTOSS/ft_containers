@@ -6,9 +6,7 @@
 #include <iterator>
 #include <limits>
 #include <algorithm>
-#include "iterator.hpp"
-#include "is_iterator.hpp"
-#include "algorithm.hpp"
+#include "utils.hpp"
 
 namespace ft
 {
@@ -128,7 +126,7 @@ namespace ft
 		typedef const T *										const_pointer;
 		typedef typename list<value_type>::ListIterator			iterator;
 		typedef const typename list<value_type>::ListIterator	const_iterator;
-		typedef reverse_iterator<iterator>                  	reverse_iterator;
+		typedef ft::iterator::reverse_iterator<iterator>        reverse_iterator;
 		typedef const reverse_iterator                      	const_reverse_iterator;
 
 	public:
@@ -159,7 +157,7 @@ namespace ft
 		template <class InputIterator>
 		list (InputIterator first, InputIterator last): _head(new node()), _tail(new node()), _size(0)
 		{
-			this->private_iterator_constructor(first, last, typename ft::is_iterator<InputIterator>::val());
+			this->private_iterator_constructor(first, last, typename ft::iterator::is_iterator<InputIterator>::val());
 		};
 
 	public:
@@ -289,7 +287,7 @@ namespace ft
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last)
 		{
-			this->template private_assign(first, last, typename ft::is_iterator<InputIterator>::val());
+			this->template private_assign(first, last, typename ft::iterator::is_iterator<InputIterator>::val());
 		};
 
 		void assign (size_type n, const value_type& val)
@@ -627,7 +625,7 @@ namespace ft
 	private:
 
 		template < class InputIterator >
-		void private_iterator_constructor(InputIterator first, InputIterator last, ft::truth)
+		void private_iterator_constructor(InputIterator first, InputIterator last, ft::iterator::truth)
 		{
 			_head->prev = _tail;
 			_head->next = _tail;
@@ -636,7 +634,7 @@ namespace ft
 			this->template assign(first, last);
 		};
 
-		void private_iterator_constructor(size_type n, const value_type & val, ft::falsity)
+		void private_iterator_constructor(size_type n, const value_type & val, ft::iterator::falsity)
 		{
 			_head->prev = _tail;
 			_head->next = _tail;
@@ -646,7 +644,7 @@ namespace ft
 		};
 
 		template < class InputIterator >
-		void private_assign(InputIterator first, InputIterator last, ft::truth)
+		void private_assign(InputIterator first, InputIterator last, ft::iterator::truth)
 		{
 			clear();
 			node * iter;
@@ -669,7 +667,7 @@ namespace ft
 			_tail->prev = iter;
 		};
 
-		void private_assign(size_type n, const value_type& val, ft::falsity)
+		void private_assign(size_type n, const value_type& val, ft::iterator::falsity)
 		{
 			this->assign(n, val);
 		};
@@ -679,7 +677,7 @@ namespace ft
 	template < class T >
 	bool operator == (const list<T>& lhs, const list<T>& rhs)
 	{
-		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		return (ft::algorithm::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	};
 
 	template < class T >
@@ -691,7 +689,7 @@ namespace ft
 	template < class T >
 	bool operator < (const typename ft::list<T>& lhs, const typename ft::list<T>& rhs)
 	{
-		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+		return (ft::algorithm::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	};
 
 	template < class T >
