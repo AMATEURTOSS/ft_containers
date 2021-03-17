@@ -17,8 +17,10 @@ limits
 -
 algorithm
 -
-utils.hpp
-C:/Users/admin/Desktop/ft_containers/utils.hpp
+utils/iterator.hpp
+C:/Users/admin/Desktop/ft_containers/utils/iterator.hpp
+utils/algorithm.hpp
+C:/Users/admin/Desktop/ft_containers/utils/algorithm.hpp
 
 C:/Users/admin/Desktop/ft_containers/test/listTest.cpp
 ../list.hpp
@@ -32,5 +34,7 @@ vector
 cmath
 -
 
-C:/Users/admin/Desktop/ft_containers/utils.hpp
+C:/Users/admin/Desktop/ft_containers/utils/algorithm.hpp
+
+C:/Users/admin/Desktop/ft_containers/utils/iterator.hpp
 

@@ -3,5 +3,6 @@
 
 CMakeFiles/listTest.dir/test/listTest.obj: ../list.hpp
 CMakeFiles/listTest.dir/test/listTest.obj: ../test/listTest.cpp
-CMakeFiles/listTest.dir/test/listTest.obj: ../utils.hpp
+CMakeFiles/listTest.dir/test/listTest.obj: ../utils/algorithm.hpp
+CMakeFiles/listTest.dir/test/listTest.obj: ../utils/iterator.hpp
 

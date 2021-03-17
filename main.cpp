@@ -1,10 +1,14 @@
 #include <iostream>
-#include "vector.hpp"
-#include "list.hpp"
-#include "map.hpp"
 #include <list>
 #include <vector>
 #include <map>
+#include <stack>
+
+#include "vector.hpp"
+#include "list.hpp"
+#include "map.hpp"
+#include "stack.hpp"
+#include "utils/pair.hpp"
 
 template < class vector >
 void print_all_vector(vector a)
@@ -33,23 +37,16 @@ void print_all_list(list & a)
 int main ()
 {
 	{
-		std::list<int> a(10, 0);
-		std::list<int> b(4, 100);
-		print_all_list(a);
-		print_all_list(b);
-		std::cout << (a < b) << std::endl;
+		std::map<char, int> a;
+		a.insert(std::pair<char, int>('a', 42));
+		a.insert(std::pair<char, int>('b', 24));
+		a.insert(std::pair<char, int>('c', 4242));
 	}
 	std::cout << "------------------------------" << std::endl;
 	{
-		int ptr[] = {1, 2, 3, 4, 5};
-		ft::list<int> a(ptr, ptr + 3);
-		a.push_back(10);
-		a.push_back(*a.begin());
-		ft::list<int> b(ptr, ptr + 3);
-		b.push_back(10);
-		b.push_back(*++a.begin());
-		print_all_list(a);
-		print_all_list(b);
-		std::cout << (a == b) << std::endl;
+		ft::map<char, int> a;
+		a.insert(ft::pair<char, int>('a', 42));
+		a.insert(ft::pair<char, int>('b', 24));
+		a.insert(ft::pair<char, int>('c', 4242));
 	}
 }

@@ -168,6 +168,19 @@ vectorTest/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/build
 .PHONY : vectorTest/fast
 
+#=============================================================================
+# Target rules for targets named stackTest
+
+# Build rule for target.
+stackTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 stackTest
+.PHONY : stackTest
+
+# fast build rule for target.
+stackTest/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\stackTest.dir\build.make CMakeFiles/stackTest.dir/build
+.PHONY : stackTest/fast
+
 # target to build an object file
 main.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.obj
@@ -199,6 +212,21 @@ test/listTest.s:
 .PHONY : test/listTest.s
 
 # target to build an object file
+test/stackTest.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\stackTest.dir\build.make CMakeFiles/stackTest.dir/test/stackTest.obj
+.PHONY : test/stackTest.obj
+
+# target to preprocess a source file
+test/stackTest.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\stackTest.dir\build.make CMakeFiles/stackTest.dir/test/stackTest.i
+.PHONY : test/stackTest.i
+
+# target to generate assembly for a file
+test/stackTest.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\stackTest.dir\build.make CMakeFiles/stackTest.dir/test/stackTest.s
+.PHONY : test/stackTest.s
+
+# target to build an object file
 test/vectorTest.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/test/vectorTest.obj
 .PHONY : test/vectorTest.obj
@@ -223,6 +251,7 @@ help:
 	@echo ... rebuild_cache
 	@echo ... listTest
 	@echo ... main
+	@echo ... stackTest
 	@echo ... vectorTest
 	@echo ... main.obj
 	@echo ... main.i
@@ -230,6 +259,9 @@ help:
 	@echo ... test/listTest.obj
 	@echo ... test/listTest.i
 	@echo ... test/listTest.s
+	@echo ... test/stackTest.obj
+	@echo ... test/stackTest.i
+	@echo ... test/stackTest.s
 	@echo ... test/vectorTest.obj
 	@echo ... test/vectorTest.i
 	@echo ... test/vectorTest.s

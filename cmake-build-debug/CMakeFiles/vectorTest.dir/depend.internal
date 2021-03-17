@@ -3,5 +3,6 @@
 
 CMakeFiles/vectorTest.dir/test/vectorTest.obj
  C:/Users/admin/Desktop/ft_containers/test/vectorTest.cpp
- C:/Users/admin/Desktop/ft_containers/utils.hpp
+ C:/Users/admin/Desktop/ft_containers/utils/algorithm.hpp
+ C:/Users/admin/Desktop/ft_containers/utils/iterator.hpp
  C:/Users/admin/Desktop/ft_containers/vector.hpp

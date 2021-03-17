@@ -6,12 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/admin/Desktop/ft_containers/is_iterator.hpp
-iterator
--
-
-C:/Users/admin/Desktop/ft_containers/iterator.hpp
-
 C:/Users/admin/Desktop/ft_containers/list.hpp
 memory
 -
@@ -23,13 +17,21 @@ limits
 -
 algorithm
 -
-iterator.hpp
-C:/Users/admin/Desktop/ft_containers/iterator.hpp
-is_iterator.hpp
-C:/Users/admin/Desktop/ft_containers/is_iterator.hpp
+utils/iterator.hpp
+C:/Users/admin/Desktop/ft_containers/utils/iterator.hpp
+utils/algorithm.hpp
+C:/Users/admin/Desktop/ft_containers/utils/algorithm.hpp
 
 C:/Users/admin/Desktop/ft_containers/main.cpp
 iostream
+-
+list
+-
+vector
+-
+map
+-
+stack
 -
 vector.hpp
 C:/Users/admin/Desktop/ft_containers/vector.hpp
@@ -37,20 +39,26 @@ list.hpp
 C:/Users/admin/Desktop/ft_containers/list.hpp
 map.hpp
 C:/Users/admin/Desktop/ft_containers/map.hpp
-list
--
-vector
--
-map
--
+stack.hpp
+C:/Users/admin/Desktop/ft_containers/stack.hpp
+utils/pair.hpp
+C:/Users/admin/Desktop/ft_containers/utils/pair.hpp
 
 C:/Users/admin/Desktop/ft_containers/map.hpp
-pair.hpp
-C:/Users/admin/Desktop/ft_containers/pair.hpp
+stack.hpp
+C:/Users/admin/Desktop/ft_containers/stack.hpp
+utils/pair.hpp
+C:/Users/admin/Desktop/ft_containers/utils/pair.hpp
+
+C:/Users/admin/Desktop/ft_containers/stack.hpp
 list.hpp
 C:/Users/admin/Desktop/ft_containers/list.hpp
 
-C:/Users/admin/Desktop/ft_containers/pair.hpp
+C:/Users/admin/Desktop/ft_containers/utils/algorithm.hpp
+
+C:/Users/admin/Desktop/ft_containers/utils/iterator.hpp
+
+C:/Users/admin/Desktop/ft_containers/utils/pair.hpp
 
 C:/Users/admin/Desktop/ft_containers/vector.hpp
 memory
@@ -61,6 +69,10 @@ iterator
 -
 limits
 -
-iterator.hpp
-C:/Users/admin/Desktop/ft_containers/iterator.hpp
+iostream
+-
+utils/iterator.hpp
+C:/Users/admin/Desktop/ft_containers/utils/iterator.hpp
+utils/algorithm.hpp
+C:/Users/admin/Desktop/ft_containers/utils/algorithm.hpp
 

@@ -6,13 +6,21 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/admin/Desktop/ft_containers/test/vectorTest.cpp
-../vector.hpp
+C:/Users/admin/Desktop/ft_containers/stack.hpp
+vector.hpp
 C:/Users/admin/Desktop/ft_containers/vector.hpp
-iomanip
--
+
+C:/Users/admin/Desktop/ft_containers/test/stackTest.cpp
 iostream
 -
+deque
+-
+vector
+-
+iomanip
+-
+../stack.hpp
+C:/Users/admin/Desktop/ft_containers/stack.hpp
 
 C:/Users/admin/Desktop/ft_containers/utils/algorithm.hpp
 

@@ -75,6 +75,7 @@ CMAKE_BINARY_DIR = C:\Users\admin\Desktop\ft_containers\cmake-build-debug
 all: CMakeFiles/main.dir/all
 all: CMakeFiles/listTest.dir/all
 all: CMakeFiles/vectorTest.dir/all
+all: CMakeFiles/stackTest.dir/all
 
 .PHONY : all
 
@@ -87,6 +88,7 @@ preinstall:
 clean: CMakeFiles/main.dir/clean
 clean: CMakeFiles/listTest.dir/clean
 clean: CMakeFiles/vectorTest.dir/clean
+clean: CMakeFiles/stackTest.dir/clean
 
 .PHONY : clean
 
@@ -151,7 +153,7 @@ CMakeFiles/listTest.dir/clean:
 CMakeFiles/vectorTest.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\admin\Desktop\ft_containers\cmake-build-debug\CMakeFiles --progress-num=5,6 "Built target vectorTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\admin\Desktop\ft_containers\cmake-build-debug\CMakeFiles --progress-num=7,8 "Built target vectorTest"
 .PHONY : CMakeFiles/vectorTest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -170,6 +172,33 @@ vectorTest: CMakeFiles/vectorTest.dir/rule
 CMakeFiles/vectorTest.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\vectorTest.dir\build.make CMakeFiles/vectorTest.dir/clean
 .PHONY : CMakeFiles/vectorTest.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/stackTest.dir
+
+# All Build rule for target.
+CMakeFiles/stackTest.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\stackTest.dir\build.make CMakeFiles/stackTest.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\stackTest.dir\build.make CMakeFiles/stackTest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\admin\Desktop\ft_containers\cmake-build-debug\CMakeFiles --progress-num=5,6 "Built target stackTest"
+.PHONY : CMakeFiles/stackTest.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/stackTest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\admin\Desktop\ft_containers\cmake-build-debug\CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/stackTest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\admin\Desktop\ft_containers\cmake-build-debug\CMakeFiles 0
+.PHONY : CMakeFiles/stackTest.dir/rule
+
+# Convenience name for target.
+stackTest: CMakeFiles/stackTest.dir/rule
+
+.PHONY : stackTest
+
+# clean rule for target.
+CMakeFiles/stackTest.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\stackTest.dir\build.make CMakeFiles/stackTest.dir/clean
+.PHONY : CMakeFiles/stackTest.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
