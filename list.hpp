@@ -85,27 +85,31 @@ namespace ft
 
 			ListIterator & operator ++ (/* Prefix increment operator. */)
 			{
-				_pointer = _pointer->next;
+				if (_pointer != NULL)
+					_pointer = _pointer->next;
 				return (*this);
 			}
 
 			ListIterator operator ++ (int/* Postfix increment operator. */)
 			{
 				ListIterator ret = *this;
-				_pointer = _pointer->next;
+				if (_pointer != NULL)
+					_pointer = _pointer->next;
 				return (ret);
 			}
 
 			ListIterator & operator -- (/* Prefix decrement operator. */)
 			{
-				_pointer = _pointer->prev;
+				if (_pointer != NULL)
+					_pointer = _pointer->prev;
 				return (*this);
 			}
 
 			ListIterator operator -- (int/* Postfix decrement operator. */)
 			{
 				ListIterator ret = *this;
-				_pointer = _pointer->prev;
+				if (_pointer != NULL)
+					_pointer = _pointer->prev;
 				return (ret);
 			}
 
@@ -174,7 +178,7 @@ namespace ft
 			_head->next = _tail;
 			_tail->prev = _head;
 			_tail->next = _head;
-			this->template assign(first, last);
+			this->assign(first, last);
 		}
 
 		list& operator = (const list& x)
@@ -189,7 +193,7 @@ namespace ft
 			_head->next = _tail;
 			_tail->prev = _head;
 			_tail->next = _head;
-			this->template assign(first, last);
+			this->assign(first, last);
 			return (*this);
 		}
 
@@ -288,7 +292,7 @@ namespace ft
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last)
 		{
-			this->template private_assign(first, last, typename ft::is_iterator<InputIterator>::val());
+			this->private_assign(first, last, typename ft::is_iterator<InputIterator>::val());
 		}
 
 		void assign (size_type n, const value_type& val)
@@ -398,7 +402,9 @@ namespace ft
 		iterator erase (iterator position)
 		{
 			node * dest;
-
+			
+			if (position == NULL)
+				return (NULL);
 			dest = position->next->prev;
 			position->next->prev = position->prev;
 			position->prev->next = position->next;
@@ -409,6 +415,8 @@ namespace ft
 
 		iterator erase (iterator first, iterator last)
 		{
+			if (first == NULL || last == NULL )
+				return (NULL);
 			for (; first != last;)
 				this->erase(first++);
 			return (last);

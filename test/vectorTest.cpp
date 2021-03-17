@@ -319,7 +319,6 @@ int main(void)
 
 		// erase the 6th element
 		myvector.erase (myvector.begin()+5);
-
 		// erase the first 3 elements:
 		myvector.erase (myvector.begin(),myvector.begin()+3);
 

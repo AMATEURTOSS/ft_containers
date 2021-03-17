@@ -194,7 +194,7 @@ namespace ft
 		template < class InputIterator >
 		vector (InputIterator first, InputIterator last): _al(Alloc())
 		{
-			this->template private_iterator_constructor(first, last, typename ft::is_iterator<InputIterator>::val());
+			this->private_iterator_constructor(first, last, typename ft::is_iterator<InputIterator>::val());
 		}
 
 		vector (const vector & ref): _al(Alloc()), _data(_al.allocate(ref._capacity)), _size(ref._size), _capacity(ref._capacity)
@@ -386,7 +386,7 @@ namespace ft
 		template < class InputIterator >
 		void assign (InputIterator first, InputIterator last)
 		{
-			this->private_iterator_constructor(first, last, typename ft::is_iterator<InputIterator>::val());
+			this->private_assign(first, last, typename ft::is_iterator<InputIterator>::val());
 		}
 
 		void push_back (const_reference val)
@@ -462,11 +462,6 @@ namespace ft
 				_al.destroy(&(*((position + i) + 1)));
 			}
 			--_size;
-			if (_size < _capacity)
-			{
-				_al.deallocate(_data + _size, _capacity - _size);
-				_capacity -= _capacity - _size;
-			}
 			return (position);
 		}
 
