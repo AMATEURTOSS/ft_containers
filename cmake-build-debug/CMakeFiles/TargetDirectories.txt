@@ -1,6 +1,0 @@
-C:/Users/admin/Desktop/ft_containers/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/admin/Desktop/ft_containers/cmake-build-debug/CMakeFiles/main.dir
-C:/Users/admin/Desktop/ft_containers/cmake-build-debug/CMakeFiles/listTest.dir
-C:/Users/admin/Desktop/ft_containers/cmake-build-debug/CMakeFiles/vectorTest.dir
-C:/Users/admin/Desktop/ft_containers/cmake-build-debug/CMakeFiles/stackTest.dir
-C:/Users/admin/Desktop/ft_containers/cmake-build-debug/CMakeFiles/rebuild_cache.dir

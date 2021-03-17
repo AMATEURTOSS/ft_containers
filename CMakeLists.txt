@@ -1,7 +1,0 @@
-project(main)
-set(CMAKE_CXX_STANDARD 98)
-add_compile_options(-Wall -Wextra -Werror)
-add_executable(main main.cpp)
-add_executable(listTest test/listTest.cpp)
-add_executable(vectorTest test/vectorTest.cpp)
-add_executable(stackTest test/stackTest.cpp)
